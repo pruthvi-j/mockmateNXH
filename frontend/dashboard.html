@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Dashboard | NextHire</title>
+  <meta name="description" content="NextHire candidate control center: manage resumes, select target roles, and launch JARVIS mock interviews.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .dashboard-container {
+      max-width: 1240px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      width: 100%;
+    }
+    .welcome-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.2rem;
+      padding: 2rem 2.5rem;
+      background: linear-gradient(135deg, rgba(0, 102, 255, 0.15) 0%, rgba(0, 229, 255, 0.08) 100%);
+      border: 1px solid var(--border-glass-strong);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(var(--blur-glass));
+    }
+    .welcome-text h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+    }
+    .welcome-text h1 span {
+      color: var(--neon-cyan);
+    }
+    .welcome-text p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.8rem;
+    }
+    .action-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 1.8rem;
+    }
+    .quick-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all var(--transition-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+    .quick-card:hover {
+      border-color: var(--neon-cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 229, 255, 0.15);
+    }
+    .quick-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .icon-cyan { background: rgba(0, 229, 255, 0.15); color: var(--neon-cyan); }
+    .icon-emerald { background: rgba(0, 245, 160, 0.15); color: var(--neon-emerald); }
+    .icon-amber { background: rgba(255, 183, 3, 0.15); color: var(--neon-amber); }
+    .recent-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .recent-table th {
+      text-align: left;
+      padding: 0.8rem 1rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .recent-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-main);
+    }
+    @media (max-width: 900px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      .welcome-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon"><i class="fas fa-microchip"></i></div>
+        <div class="brand-title">Next<span>Hire</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/dashboard" class="active"><i class="fas fa-columns"></i> Dashboard</a></li>
+        <li><a href="/interview"><i class="fas fa-robot"></i> Live Interview</a></li>
+        <li><a href="/history"><i class="fas fa-clock-rotate-left"></i> History</a></li>
+        <li><a href="/feedback"><i class="fas fa-chart-pie"></i> Feedback</a></li>
+      </ul>
+      <div class="nav-actions">
+        <span class="badge badge-green" id="serverStatusBadge"><i class="fas fa-plug"></i> Backend Online</span>
+        <a href="/login" class="btn btn-glass btn-sm"><i class="fas fa-right-from-bracket"></i> Sign Out</a>
+      </div>
+    </header>
+
+    <main class="dashboard-container">
+      <!-- Welcome Header -->
+      <section class="welcome-banner">
+        <div class="welcome-text">
+          <h1>Welcome, <span id="candidateName">Candidate</span></h1>
+          <p>Prepare for your next MCA placement with AI-driven voice interviews and concept-level scoring.</p>
+        </div>
+        <a href="/interview" class="btn btn-primary" style="padding: 0.8rem 1.8rem;">
+          <i class="fas fa-play"></i> Start JARVIS Interview
+        </a>
+      </section>
+
+      <!-- Dashboard Grid -->
+      <div class="dashboard-grid">
+        <!-- Main Content Area -->
+        <div class="dashboard-main-col">
+          <!-- Quick Action Cards -->
+          <div class="action-cards-grid">
+            <a href="/interview" class="quick-card">
+              <div>
+                <div class="quick-card-icon icon-cyan"><i class="fas fa-headset"></i></div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.3rem;">Launch JARVIS</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Interactive voice interview with real-time speech processing.</p>
+              </div>
+              <span style="color: var(--neon-cyan); font-size: 0.85rem; margin-top: 1rem; font-weight: 600;">Start Session &rarr;</span>
+            </a>
+
+            <div class="quick-card" style="cursor: pointer;" onclick="document.getElementById('resumeFileInput').click();">
+              <div>
+                <div class="quick-card-icon icon-emerald"><i class="fas fa-file-arrow-up"></i></div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.3rem;">Upload Resume</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">PDF or DOCX for automated skill & technology extraction.</p>
+              </div>
+              <input type="file" id="resumeFileInput" style="display:none;" accept=".pdf,.doc,.docx" onchange="window.NextHire.showToast('Resume selected: ' + this.files[0].name + ' (Upload pipeline configured)', 'success');">
+              <span style="color: var(--neon-emerald); font-size: 0.85rem; margin-top: 1rem; font-weight: 600;">Choose File &rarr;</span>
+            </div>
+
+            <a href="/history" class="quick-card">
+              <div>
+                <div class="quick-card-icon icon-amber"><i class="fas fa-chart-line"></i></div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.3rem;">Review History</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">Examine previous sessions, scores, and recommendations.</p>
+              </div>
+              <span style="color: var(--neon-amber); font-size: 0.85rem; margin-top: 1rem; font-weight: 600;">View History &rarr;</span>
+            </a>
+          </div>
+
+          <!-- Recent Interview Sessions Table -->
+          <div class="glass-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="font-size: 1.15rem; color: #ffffff;">Recent Interview Sessions</h3>
+              <span class="badge badge-cyan">Isolated Sessions</span>
+            </div>
+            <table class="recent-table">
+              <thead>
+                <tr>
+                  <th>Session ID</th>
+                  <th>Target Role</th>
+                  <th>Questions</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="recentSessionsTableBody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right Sidebar: Configuration & Role Selection -->
+        <aside class="dashboard-side-col">
+          <div class="glass-card" style="margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: #ffffff;"><i class="fas fa-sliders"></i> Interview Setup</h3>
+            <div class="form-group">
+              <label class="form-label">Active Target Role</label>
+              <select class="form-control" id="selectedRoleInput">
+                <option value="Full Stack Software Engineer" selected>Full Stack Software Engineer</option>
+                <option value="Python Backend Developer">Python Backend Developer</option>
+                <option value="Java Enterprise Engineer">Java Enterprise Engineer</option>
+                <option value="DevOps Engineer">DevOps Engineer</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Interview Mode</label>
+              <div style="font-size: 0.88rem; color: var(--neon-cyan); background: rgba(0, 229, 255, 0.08); padding: 0.6rem; border-radius: 8px; border: 1px solid rgba(0, 229, 255, 0.2);">
+                <i class="fas fa-robot"></i> JARVIS Voice & Concept Engine
+              </div>
+            </div>
+            <a href="/interview" class="btn btn-primary" style="width: 100%;">
+              <span>Enter Interview Room</span> <i class="fas fa-door-open"></i>
+            </a>
+          </div>
+
+          <div class="glass-card">
+            <h4 style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">Session Guarantee</h4>
+            <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6;">
+              Every interview has a unique session code. Results and feedback belong strictly to that session and are never intermingled.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div>NextHire &copy; 2026. Candidate Portal.</div>
+      <div>Stage 1 &bull; Phase 1 Architecture</div>
+    </footer>
+  </div>
+
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const tbody = document.getElementById('recentSessionsTableBody');
+      if (!tbody) return;
+      try {
+        const res = await fetch('/api/interview/history');
+        const data = await res.json();
+        if (data.success && data.history && data.history.length > 0) {
+          tbody.innerHTML = '';
+          data.history.slice(0, 5).forEach(item => {
+            const tr = document.createElement('tr');
+            const isCompleted = item.status === 'completed';
+            const badgeClass = isCompleted ? 'badge-green' : 'badge-amber';
+            const statusLabel = isCompleted ? 'Completed' : 'In Progress';
+
+            tr.innerHTML = `
+              <td><code>${item.session_code}</code></td>
+              <td>${item.target_role}</td>
+              <td>${item.answered_count} / ${item.total_questions} Answered</td>
+              <td><span class="badge ${badgeClass}">${statusLabel}</span></td>
+              <td><a href="/feedback?session=${encodeURIComponent(item.session_code)}" class="btn btn-glass btn-sm" style="padding: 0.25rem 0.6rem;">Report</a></td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } else {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">No sessions found.</td></tr>';
+        }
+      } catch (err) {
+        console.error('Failed to load recent sessions:', err);
+      }
+    });
+  </script>
+</body>
+</html>

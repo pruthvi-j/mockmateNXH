@@ -1,0 +1,65 @@
+# ─── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# ─── Virtual Environments ─────────────────────────────────────────────────────
+venv/
+.venv/
+ENV/
+env/
+.env
+env.bak/
+venv.bak/
+
+# ─── Secrets & Credentials ────────────────────────────────────────────────────
+# .env is excluded; use .env.example as the template
+.env
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.json
+credentials.json
+
+# ─── Database files ───────────────────────────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+
+# ─── Uploads (personal resume files) ─────────────────────────────────────────
+uploads/*
+!uploads/.gitkeep
+
+# ─── Temporary / debug dumps ──────────────────────────────────────────────────
+report_dump.txt
+capture_screenshots.py
+
+# ─── Word processor lock files ────────────────────────────────────────────────
+~$*
+
+# ─── IDE / Editor ─────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+
+# ─── OS generated ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Distribution / packaging ─────────────────────────────────────────────────
+dist/
+build/
+*.egg-info/
+.eggs/
+*.egg

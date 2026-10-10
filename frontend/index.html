@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NextHire | Intelligent Mock Interview System</title>
+  <meta name="description" content="NextHire is an intelligent mock interview platform powered by JARVIS voice AI, resume analysis, and concept-based answer evaluation.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .hero-section {
+      padding: 5rem 2.5rem 4rem;
+      text-align: center;
+      max-width: 960px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      padding: 0.35rem 1rem;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      color: var(--neon-cyan);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 1.3rem;
+      letter-spacing: -0.5px;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px var(--neon-cyan-glow);
+    }
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 3.5rem;
+      flex-wrap: wrap;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+      max-width: 1180px;
+      margin: 2rem auto 4rem;
+      padding: 0 2rem;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      backdrop-filter: blur(var(--blur-glass));
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15);
+    }
+    .feature-icon {
+      width: 50px;
+      height: 50px;
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: var(--neon-cyan);
+      margin-bottom: 1.2rem;
+    }
+    .feature-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      color: #ffffff;
+    }
+    .feature-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Navbar -->
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon"><i class="fas fa-microchip"></i></div>
+        <div class="brand-title">Next<span>Hire</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="active"><i class="fas fa-house"></i> Home</a></li>
+        <li><a href="/interview"><i class="fas fa-robot"></i> JARVIS Core</a></li>
+        <li><a href="/dashboard"><i class="fas fa-columns"></i> Dashboard</a></li>
+        <li><a href="/history"><i class="fas fa-clock-rotate-left"></i> History</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/login" class="btn btn-glass btn-sm">Sign In</a>
+        <a href="/register" class="btn btn-primary btn-sm">Get Started</a>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+      <section class="hero-section">
+        <div class="hero-pill">
+          <i class="fas fa-sparkles"></i> MCA Master Engineering Project
+        </div>
+        <h1 class="hero-title">
+          Master Technical Interviews with <span>JARVIS Voice AI</span>
+        </h1>
+        <p class="hero-desc">
+          NextHire combines intelligent resume parsing, role-targeted question banks, and concept-based answer evaluation with an interactive JARVIS voice assistant.
+        </p>
+        <div class="hero-actions">
+          <a href="/interview" class="btn btn-primary">
+            <i class="fas fa-bolt"></i> Launch JARVIS Interview
+          </a>
+          <a href="/dashboard" class="btn btn-glass">
+            <i class="fas fa-gauge"></i> Candidate Portal
+          </a>
+        </div>
+      </section>
+
+      <!-- Key Capabilities Grid -->
+      <section class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-robot"></i></div>
+          <h3 class="feature-title">JARVIS Voice Assistant</h3>
+          <p class="feature-desc">
+            Experience a futuristic, audio-reactive interface capable of speaking questions, analyzing candidate vocal delivery, and rendering real-time speech-to-text.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-file-lines"></i></div>
+          <h3 class="feature-title">Resume & Skill Extraction</h3>
+          <p class="feature-desc">
+            Parses PDF and DOCX resumes using PyMuPDF and python-docx to isolate programming languages, frameworks, and technical competencies.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-brain"></i></div>
+          <h3 class="feature-title">Concept-Based Evaluation</h3>
+          <p class="feature-desc">
+            Goes beyond rigid string matching by benchmarking spoken answers against domain concept keywords, communication fluency, and technical completeness.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
+          <h3 class="feature-title">Isolated Session Integrity</h3>
+          <p class="feature-desc">
+            Guarantees strict interview session isolation in MySQL so no two interviews ever leak or cross-contaminate feedback, metrics, or recommendations.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div>NextHire &copy; 2026. Intelligent Mock Interview System.</div>
+      <div>Developed with Flask &bull; MySQL &bull; JARVIS Core Engine</div>
+    </footer>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+</html>

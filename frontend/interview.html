@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JARVIS AI Interviewer | NextHire</title>
+  <meta name="description" content="NextHire Intelligent Mock Interview System with real-time JARVIS AI voice interaction.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/jarvis.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Navbar -->
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon"><i class="fas fa-microchip"></i></div>
+        <div class="brand-title">Next<span>Hire</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/dashboard"><i class="fas fa-columns"></i> Dashboard</a></li>
+        <li><a href="/interview" class="active"><i class="fas fa-robot"></i> Live Interview</a></li>
+        <li><a href="/history"><i class="fas fa-clock-rotate-left"></i> History</a></li>
+        <li><a href="/feedback"><i class="fas fa-chart-pie"></i> Feedback</a></li>
+      </ul>
+      <div class="nav-actions">
+        <span class="badge badge-cyan"><i class="fas fa-circle-dot"></i> JARVIS v1.0 Core</span>
+        <a href="/dashboard" class="btn btn-glass btn-sm"><i class="fas fa-arrow-left"></i> Exit to Dashboard</a>
+      </div>
+    </header>
+
+    <!-- Main Viewport for JARVIS Interview -->
+    <main class="interview-viewport jarvis-state-idle" id="interviewViewport">
+      <!-- HUD Top Meta Bar -->
+      <section class="jarvis-hud-bar">
+        <div class="hud-meta-left">
+          <div class="session-badge">
+            <i class="fas fa-hashtag"></i> SESSION: <strong id="hudSessionCode">NXH-2026-MCA-01</strong>
+          </div>
+          <div class="role-badge">
+            <i class="fas fa-briefcase"></i> TARGET ROLE: <span id="hudTargetRole">Full Stack Software Engineer</span>
+          </div>
+        </div>
+
+        <!-- Direct State Switcher for MCA Project Examination -->
+        <div class="state-switcher-hud">
+          <span>JARVIS State:</span>
+          <button class="state-btn active" data-state="IDLE">IDLE</button>
+          <button class="state-btn" data-state="LISTENING">LISTENING</button>
+          <button class="state-btn" data-state="SPEAKING">SPEAKING</button>
+          <button class="state-btn" data-state="THINKING">THINKING</button>
+          <button class="state-btn" data-state="PROCESSING">PROCESSING</button>
+        </div>
+      </section>
+
+      <!-- Main Stage Split -->
+      <div class="interview-main-stage">
+        <!-- Left Panel: Interview Question Area -->
+        <article class="question-panel">
+          <div class="q-header">
+            <span class="q-index-pill" id="qIndexPill">Question 1 of 3</span>
+            <span class="badge badge-blue" id="qDifficulty">Intermediate</span>
+          </div>
+
+          <div class="q-body">
+            <h2 class="q-title" id="qTitle">
+              Explain the architectural difference between monolithic systems and microservices, and how inter-service communication is typically handled.
+            </h2>
+            <div class="q-meta-tags">
+              <span class="q-meta-tag"><i class="fas fa-layer-group"></i> <span id="qCategory">System Design</span></span>
+              <span class="q-meta-tag"><i class="fas fa-brain"></i> Concept Match Engine</span>
+              <span class="q-meta-tag"><i class="fas fa-shield-halved"></i> Isolated Session</span>
+            </div>
+          </div>
+
+          <div class="q-footer-actions">
+            <button class="btn btn-glass btn-sm" id="speakQuestionBtn" title="JARVIS will speak this question aloud">
+              <i class="fas fa-volume-high"></i> Listen to Question
+            </button>
+            <button class="btn btn-glass btn-sm" id="repeatQuestionBtn" title="Replay voice audio">
+              <i class="fas fa-rotate-left"></i> Repeat
+            </button>
+          </div>
+        </article>
+
+        <!-- Center Stage: The Distinctive JARVIS Kinetic Arc Visualizer -->
+        <section class="jarvis-center-stage">
+          <div class="jarvis-visual-wrapper">
+            <!-- Outer Segmented Rotating HUD Ring -->
+            <div class="jarvis-ring-outer"></div>
+            <!-- Middle Gyroscope Ring -->
+            <div class="jarvis-ring-middle"></div>
+            <!-- Inner Flux Ring -->
+            <div class="jarvis-ring-inner"></div>
+
+            <!-- Central Arc Reactor Intelligent Core -->
+            <div class="jarvis-arc-core" id="jarvisArcCore">
+              <div class="jarvis-core-symbol">
+                <!-- High-Tech Hexagonal Core Glyph -->
+                <svg viewBox="0 0 100 100">
+                  <polygon points="50,5 90,25 90,75 50,95 10,75 10,25" />
+                  <circle cx="50" cy="50" r="16" />
+                  <line x1="50" y1="5" x2="50" y2="34" />
+                  <line x1="50" y1="66" x2="50" y2="95" />
+                  <line x1="10" y1="25" x2="35" y2="40" />
+                  <line x1="65" y1="60" x2="90" y2="75" />
+                  <line x1="10" y1="75" x2="35" y2="60" />
+                  <line x1="65" y1="40" x2="90" y2="25" />
+                </svg>
+              </div>
+              <!-- Real-time Sine/Frequency Wave Canvas -->
+              <canvas class="jarvis-wave-canvas" id="jarvisWaveCanvas" width="100" height="28"></canvas>
+            </div>
+          </div>
+
+          <!-- Dynamic Status HUD Pill -->
+          <div class="jarvis-state-indicator">
+            <div class="jarvis-state-pill" id="jarvisStatePill">
+              <div class="status-beacon"></div>
+              <span>JARVIS: <strong id="jarvisStateLabel">IDLE</strong></span>
+            </div>
+            <div class="jarvis-subtext" id="jarvisSubtext">
+              JARVIS is standing by. Ready for candidate prompt or question playback.
+            </div>
+          </div>
+        </section>
+
+        <!-- Right Panel: Answer Interaction Area -->
+        <article class="answer-panel">
+          <div class="answer-header">
+            <span class="badge badge-cyan"><i class="fas fa-comment-dots"></i> Candidate Response</span>
+            <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);" id="answerTimer">00:00</span>
+          </div>
+
+          <!-- Audio Equalizer Bars -->
+          <div class="audio-meter-container" id="audioMeter">
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+          </div>
+
+          <!-- Live Transcript / Speech-to-Text Container -->
+          <div class="transcript-container" id="liveTranscript">
+            <span class="transcript-placeholder">
+              <i class="fas fa-wave-square"></i> Press "Answer with Voice" or type below to begin your answer...
+            </span>
+          </div>
+
+          <!-- Optional Manual Input Drawer -->
+          <textarea class="manual-input-box" id="manualAnswerInput" placeholder="Type your answer manually if microphone is unavailable..."></textarea>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <button class="btn btn-glass btn-sm" id="toggleManualInputBtn" style="font-size: 0.75rem; padding: 0.2rem 0.6rem;">
+              Type Answer Manually
+            </button>
+            <span style="font-size: 0.75rem; color: var(--text-dim);" id="wordCount">0 words</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- Bottom Interactive Action Deck -->
+      <footer class="jarvis-action-deck">
+        <div class="deck-left-controls">
+          <button class="btn btn-mic-action" id="micToggleBtn">
+            <i class="fas fa-microphone"></i> <span>Answer with Voice</span>
+          </button>
+          <button class="btn btn-glass" id="skipQuestionBtn" title="Skip to next question">
+            <i class="fas fa-forward-step"></i> Skip Question
+          </button>
+        </div>
+
+        <div class="deck-right-controls">
+          <button class="btn btn-primary" id="nextQuestionBtn">
+            <span>Submit & Next Question</span> <i class="fas fa-arrow-right"></i>
+          </button>
+          <a href="/dashboard" class="btn btn-danger btn-sm" id="stopInterviewBtn">
+            <i class="fas fa-stop"></i> End Interview
+          </a>
+        </div>
+      </footer>
+
+      <!-- ===================================================================
+           NEXTHIRE JARVIS PRE-INTERVIEW ONBOARDING WORKFLOW (Steps 1 to 4)
+           =================================================================== -->
+      <div class="workflow-overlay" id="workflowOverlay">
+        <div class="workflow-card">
+          <!-- STEP 1: RESUME UPLOAD -->
+          <div class="workflow-step active-step" id="workflowStepResume">
+            <div class="jarvis-dialogue-box">
+              <div class="jarvis-avatar-icon"><i class="fas fa-robot"></i></div>
+              <div>
+                <div class="jarvis-dialogue-speaker">JARVIS Assistant</div>
+                <div class="jarvis-dialogue-text">"Welcome to NextHire. Please upload your resume to continue."</div>
+              </div>
+            </div>
+
+            <div class="drop-zone" id="resumeDropZone" onclick="document.getElementById('workflowResumeFile').click();">
+              <div class="drop-zone-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+              <div class="drop-zone-title">Upload Candidate Resume</div>
+              <div class="drop-zone-desc">Drag &amp; drop or click to choose file (.PDF or .DOCX)</div>
+              <input type="file" id="workflowResumeFile" style="display:none;" accept=".pdf,.doc,.docx">
+            </div>
+
+            <div class="file-status-indicator" id="fileStatusIndicator" style="display:none;">
+              <i class="fas fa-check-circle"></i> <span id="fileStatusName">resume.pdf</span>
+            </div>
+
+            <button class="btn btn-primary" id="btnUploadResume" style="width: 100%;" disabled>
+              <span>Upload Resume &amp; Proceed</span> <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <!-- STEP 2: TARGET ROLE SELECTION -->
+          <div class="workflow-step" id="workflowStepRole">
+            <div class="jarvis-dialogue-box">
+              <div class="jarvis-avatar-icon"><i class="fas fa-robot"></i></div>
+              <div>
+                <div class="jarvis-dialogue-speaker">JARVIS Assistant</div>
+                <div class="jarvis-dialogue-text">"Which role are you preparing for?"</div>
+              </div>
+            </div>
+
+            <div class="role-grid" id="roleGrid">
+              <div class="role-chip" data-role="Python Developer">Python Developer</div>
+              <div class="role-chip" data-role="Java Developer">Java Developer</div>
+              <div class="role-chip" data-role="Web Developer">Web Developer</div>
+              <div class="role-chip" data-role="Full Stack Developer">Full Stack Developer</div>
+              <div class="role-chip" data-role="Data Analyst">Data Analyst</div>
+              <div class="role-chip" data-role="Software Developer">Software Developer</div>
+              <div class="role-chip" data-role="Custom Role" style="grid-column: span 2;">Custom Role...</div>
+            </div>
+
+            <div class="custom-role-container" id="customRoleContainer">
+              <div class="form-group">
+                <label class="form-label" for="customRoleInput">Enter Custom Target Role</label>
+                <input type="text" id="customRoleInput" class="form-control" placeholder="e.g. Machine Learning Engineer, iOS Developer...">
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="btnConfirmRole" style="width: 100%; margin-top: 0.5rem;" disabled>
+              <span>Confirm Target Role</span> <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <!-- STEP 3: AUTOMATED ANALYSIS & QUESTION PREPARATION -->
+          <div class="workflow-step" id="workflowStepAnalysis">
+            <div class="jarvis-dialogue-box">
+              <div class="jarvis-avatar-icon"><i class="fas fa-brain"></i></div>
+              <div>
+                <div class="jarvis-dialogue-speaker">JARVIS Intelligence</div>
+                <div class="jarvis-dialogue-text">"Analyzing resume matrix, extracting skills, and synthesizing questions..."</div>
+              </div>
+            </div>
+
+            <div class="analysis-pipeline">
+              <div class="pipeline-item completed" id="pipeText">
+                <i class="fas fa-check-circle"></i> <span>Parsing Resume Structure (PyMuPDF / python-docx)</span>
+              </div>
+              <div class="pipeline-item active" id="pipeSkills">
+                <i class="fas fa-spinner fa-spin"></i> <span>Extracting Technical Skills &amp; Competencies...</span>
+              </div>
+              <div class="pipeline-item" id="pipeRole">
+                <i class="fas fa-circle-dot"></i> <span>Target Role Alignment &amp; Difficulty Calibration</span>
+              </div>
+              <div class="pipeline-item" id="pipeQuestions">
+                <i class="fas fa-circle-dot"></i> <span>Synthesizing Personalized Question Bank</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 4: READY FOR JARVIS ROUND LIQUID-GLASS MODAL -->
+          <div class="workflow-step" id="workflowStepReady">
+            <div class="ready-round-card">
+              <div class="ready-badge">
+                <i class="fas fa-circle-check"></i> Session Prepared &amp; Isolated
+              </div>
+              <h2 class="ready-title">Your interview is ready.</h2>
+              <div class="ready-prompt">Are you ready for the JARVIS round?</div>
+              <button class="btn-continue-round" id="btnContinueToRound">
+                <span>Continue →</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           STEP 5: "LET'S START!" POPUP BANNER
+           =================================================================== -->
+      <div class="lets-start-banner" id="letsStartBanner">
+        <div class="lets-start-subtitle">JARVIS AI INTERVIEWER</div>
+        <div class="lets-start-title">Let's Start!</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/main.js"></script>
+  <script src="/js/jarvis.js"></script>
+</body>
+</html>

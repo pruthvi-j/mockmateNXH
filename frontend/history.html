@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview History & Archives | NextHire</title>
+  <meta name="description" content="View past interview sessions, role attempts, and isolated feedback archives.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .history-container {
+      max-width: 1180px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      width: 100%;
+    }
+    .history-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 1.8rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(var(--blur-glass));
+      transition: all var(--transition-fast);
+    }
+    .history-card:hover {
+      border-color: var(--neon-cyan);
+      transform: translateY(-2px);
+    }
+    .history-meta h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.3rem;
+    }
+    .history-submeta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 1.2rem;
+      margin-top: 0.4rem;
+    }
+    .history-scores {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      text-align: center;
+    }
+    .score-mini-pill {
+      background: rgba(4, 9, 24, 0.7);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+    .score-mini-num {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--neon-cyan);
+    }
+    .score-mini-label {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+    @media (max-width: 850px) {
+      .history-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.2rem;
+      }
+      .history-scores {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon"><i class="fas fa-microchip"></i></div>
+        <div class="brand-title">Next<span>Hire</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/dashboard"><i class="fas fa-columns"></i> Dashboard</a></li>
+        <li><a href="/interview"><i class="fas fa-robot"></i> Live Interview</a></li>
+        <li><a href="/history" class="active"><i class="fas fa-clock-rotate-left"></i> History</a></li>
+        <li><a href="/feedback"><i class="fas fa-chart-pie"></i> Feedback</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/interview" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> New Session</a>
+      </div>
+    </header>
+
+    <main class="history-container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div>
+          <h1 style="font-size: 1.8rem; font-weight: 700; color: #ffffff;">Interview History Archive</h1>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">
+            Isolated session records. Each interview maintains independent questions, answers, and scores.
+          </p>
+        </div>
+        <span class="badge badge-cyan"><i class="fas fa-database"></i> Session Isolation Active</span>
+      </div>
+
+      <!-- Dynamic Historic Session Container -->
+      <div id="historyCardsContainer">
+        <!-- Dynamic content injected here -->
+      </div>
+
+      <div style="text-align: center; margin-top: 3rem;">
+        <a href="/dashboard" class="btn btn-glass"><i class="fas fa-arrow-left"></i> Return to Dashboard</a>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div>NextHire Session Archive</div>
+      <div>Stage 1 &bull; Phase 1 Architecture</div>
+    </footer>
+  </div>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('historyCardsContainer');
+      try {
+        const res = await fetch('/api/interview/history');
+        const data = await res.json();
+        if (data.success && data.history && data.history.length > 0) {
+          container.innerHTML = '';
+          data.history.forEach(item => {
+            const card = document.createElement('article');
+            card.className = 'history-card';
+            
+            const formatMiniScore = (score) => (score == null || score === undefined) ? 'N/A' : parseFloat(score).toFixed(1);
+
+            const techStr = formatMiniScore(item.technical_score);
+            const commStr = formatMiniScore(item.communication_score);
+            const confStr = formatMiniScore(item.confidence_score);
+
+            card.innerHTML = `
+              <div class="history-meta">
+                <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.4rem;">
+                  <span class="badge badge-blue">${item.session_code}</span>
+                  <span style="font-size: 0.8rem; color: var(--text-dim);"><i class="fas fa-calendar"></i> ${item.date}</span>
+                </div>
+                <h3>${item.target_role}</h3>
+                <div class="history-submeta">
+                  <span><i class="fas fa-circle-question"></i> ${item.total_questions} Questions (${item.answered_count} Answered, ${item.skipped_count} Skipped)</span>
+                  <span><i class="fas fa-stopwatch"></i> Duration: 8 mins</span>
+                </div>
+              </div>
+
+              <div class="history-scores">
+                <div class="score-mini-pill">
+                  <div class="score-mini-num">${techStr}</div>
+                  <div class="score-mini-label">Technical</div>
+                </div>
+                <div class="score-mini-pill">
+                  <div class="score-mini-num" style="color: var(--neon-emerald);">${commStr}</div>
+                  <div class="score-mini-label">Communication</div>
+                </div>
+                <div class="score-mini-pill">
+                  <div class="score-mini-num" style="color: var(--neon-amber);">${confStr}</div>
+                  <div class="score-mini-label">Confidence</div>
+                </div>
+                <a href="/feedback?session=${encodeURIComponent(item.session_code)}" class="btn btn-glass btn-sm"><i class="fas fa-file-lines"></i> View Report</a>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        } else {
+          container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">No historical interview sessions found.</div>';
+        }
+      } catch (err) {
+        console.error('Failed to load history:', err);
+      }
+    });
+  </script>
+</body>
+</html>

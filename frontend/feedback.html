@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Feedback & Analytics | NextHire</title>
+  <meta name="description" content="Detailed session feedback and concept evaluation metrics for the candidate interview session.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .feedback-container {
+      max-width: 1180px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      width: 100%;
+    }
+    .score-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .score-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 1.8rem;
+      text-align: center;
+      backdrop-filter: blur(var(--blur-glass));
+    }
+    .score-number {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 20px var(--neon-cyan-glow);
+      line-height: 1.2;
+    }
+    .score-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 0.5rem;
+    }
+    .feedback-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+      margin-bottom: 2rem;
+    }
+    .feedback-list {
+      list-style: none;
+      margin-top: 1rem;
+    }
+    .feedback-list li {
+      padding: 0.75rem 1rem;
+      background: rgba(4, 9, 24, 0.6);
+      border-radius: 8px;
+      margin-bottom: 0.6rem;
+      font-size: 0.9rem;
+      border-left: 3px solid var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .feedback-list.strengths li {
+      border-left-color: var(--neon-emerald);
+    }
+    .feedback-list.weaknesses li {
+      border-left-color: var(--neon-amber);
+    }
+    @media (max-width: 768px) {
+      .feedback-columns {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon"><i class="fas fa-microchip"></i></div>
+        <div class="brand-title">Next<span>Hire</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/dashboard"><i class="fas fa-columns"></i> Dashboard</a></li>
+        <li><a href="/interview"><i class="fas fa-robot"></i> Live Interview</a></li>
+        <li><a href="/history"><i class="fas fa-clock-rotate-left"></i> History</a></li>
+        <li><a href="/feedback" class="active"><i class="fas fa-chart-pie"></i> Feedback</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="/interview" class="btn btn-primary btn-sm"><i class="fas fa-rotate"></i> New Interview</a>
+      </div>
+    </header>
+
+    <main class="feedback-container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.8rem;">
+        <div>
+          <h1 style="font-size: 1.8rem; font-weight: 700; color: #ffffff;">Interview Performance Report</h1>
+          <p style="color: var(--text-muted); font-size: 0.92rem;">
+            Isolated Session: <code style="color: var(--neon-cyan);" id="feedbackSessionId">Loading...</code> &bull; Role: <span id="feedbackTargetRole" style="color: #ffffff; font-weight: 600;">Loading...</span>
+          </p>
+        </div>
+        <span class="badge badge-green"><i class="fas fa-check-circle"></i> Evaluated via Concepts</span>
+      </div>
+
+      <!-- Score Summary Grid -->
+      <section class="score-summary-grid">
+        <div class="score-card">
+          <div class="score-number" id="overallScoreVal">0.0<span style="font-size: 1.2rem; color: var(--text-dim);">/5</span></div>
+          <div class="score-label">Overall Score</div>
+        </div>
+        <div class="score-card">
+          <div class="score-number" id="techScoreVal" style="color: #60a5fa;">0.0<span style="font-size: 1.2rem; color: var(--text-dim);">/5</span></div>
+          <div class="score-label">Technical Precision</div>
+        </div>
+        <div class="score-card">
+          <div class="score-number" id="commScoreVal" style="color: var(--neon-emerald);">0.0<span style="font-size: 1.2rem; color: var(--text-dim);">/5</span></div>
+          <div class="score-label">Communication Fluency</div>
+        </div>
+        <div class="score-card">
+          <div class="score-number" id="confScoreVal" style="color: var(--neon-amber);">0.0<span style="font-size: 1.2rem; color: var(--text-dim);">/5</span></div>
+          <div class="score-label">Confidence Index</div>
+        </div>
+        <div class="score-card">
+          <div class="score-number" id="answeredCountVal" style="color: var(--neon-cyan);">—</div>
+          <div class="score-label">Answered Questions</div>
+          <div style="font-size:0.78rem; color:var(--text-dim); margin-top:0.4rem;" id="answeredSubLabel">Loading...</div>
+        </div>
+      </section>
+
+      <!-- Limited Evidence Notice (shown only when applicable) -->
+      <div id="limitedEvidenceBanner" style="display:none; margin-bottom:1.5rem; padding:0.9rem 1.2rem; background:rgba(255,183,3,0.08); border:1px solid rgba(255,183,3,0.3); border-radius:10px; font-size:0.88rem; color:#f0c040; line-height:1.6;">
+        <i class="fas fa-triangle-exclamation" style="margin-right:0.4rem;"></i>
+        <span id="limitedEvidenceText"></span>
+      </div>
+
+      <!-- Strengths and Areas of Improvement -->
+      <section class="feedback-columns">
+        <div class="glass-card">
+          <h3 style="color: var(--neon-emerald); font-size: 1.15rem;"><i class="fas fa-circle-check"></i> Key Strengths Identified</h3>
+          <ul class="feedback-list strengths" id="strengthsList">
+            <li><i class="fas fa-spinner fa-spin"></i> Loading session strengths...</li>
+          </ul>
+        </div>
+
+        <div class="glass-card">
+          <h3 style="color: var(--neon-amber); font-size: 1.15rem;"><i class="fas fa-triangle-exclamation"></i> Recommendations for Improvement</h3>
+          <ul class="feedback-list weaknesses" id="recommendationsList">
+            <li><i class="fas fa-spinner fa-spin"></i> Loading recommendations...</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Question-wise Concept Breakdown (using existing glass card aesthetic) -->
+      <section id="questionWiseSection" style="margin-bottom: 2rem;">
+        <div class="glass-card">
+          <h3 style="color: var(--neon-cyan); font-size: 1.15rem; margin-bottom: 1.2rem;">
+            <i class="fas fa-list-check"></i> Question-wise Concept Evaluation
+          </h3>
+          <div id="questionListContainer" style="display: flex; flex-direction: column; gap: 1rem;">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="/interview" class="btn btn-primary" style="margin-right: 0.8rem;"><i class="fas fa-rotate"></i> Start New Interview</a>
+        <a href="/dashboard" class="btn btn-glass"><i class="fas fa-arrow-left"></i> Return to Dashboard</a>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div>NextHire Feedback Engine</div>
+      <div>Stage 1 &bull; Phase 1 Architecture</div>
+    </footer>
+  </div>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      let sessionCode = urlParams.get('session');
+
+      if (!sessionCode) {
+        // Fallback to latest session in localStorage if available
+        sessionCode = localStorage.getItem('nexthire_last_session');
+      }
+
+      if (!sessionCode) {
+        document.getElementById('feedbackSessionId').textContent = "No Session Specified";
+        document.getElementById('feedbackTargetRole').textContent = "None";
+        return;
+      }
+
+      document.getElementById('feedbackSessionId').textContent = sessionCode;
+
+      try {
+        const res = await fetch('/api/interview/feedback/' + encodeURIComponent(sessionCode));
+        const data = await res.json();
+
+        if (data.success && data.feedback) {
+          const fb = data.feedback;
+          document.getElementById('feedbackTargetRole').textContent = fb.target_role || "Candidate";
+
+          // Score Cards
+          const formatScore = (score) => score == null ? 'N/A' : `${score}<span style="font-size: 1.2rem; color: var(--text-dim);">/5</span>`;
+          
+          document.getElementById('overallScoreVal').innerHTML = formatScore(fb.overall_score);
+          document.getElementById('techScoreVal').innerHTML = formatScore(fb.technical_score);
+          document.getElementById('commScoreVal').innerHTML = formatScore(fb.communication_score);
+          document.getElementById('confScoreVal').innerHTML = formatScore(fb.confidence_score);
+
+          // Answered Questions card (from real backend data, never hardcoded)
+          const answeredDisplay = fb.answered_display || `${fb.answered_count || 0}/${fb.total_questions || 0}`;
+          document.getElementById('answeredCountVal').textContent = answeredDisplay;
+          const skippedCount = fb.skipped_count || 0;
+          const totalQ = fb.total_questions || 0;
+          document.getElementById('answeredSubLabel').textContent =
+            `${skippedCount} skipped · ${totalQ} total`;
+
+          // Limited evidence banner
+          if (fb.limited_evidence_note) {
+            document.getElementById('limitedEvidenceText').textContent = fb.limited_evidence_note;
+            document.getElementById('limitedEvidenceBanner').style.display = 'block';
+          } else if (fb.tech_evidence_note) {
+            document.getElementById('limitedEvidenceText').textContent = fb.tech_evidence_note;
+            document.getElementById('limitedEvidenceBanner').style.display = 'block';
+          }
+
+          // Strengths
+          const strengthsUl = document.getElementById('strengthsList');
+          strengthsUl.innerHTML = '';
+          (fb.strengths || []).forEach(str => {
+            const li = document.createElement('li');
+            li.innerHTML = `<i class="fas fa-check" style="color: var(--neon-emerald);"></i> ${str}`;
+            strengthsUl.appendChild(li);
+          });
+
+          // Recommendations
+          const recsUl = document.getElementById('recommendationsList');
+          recsUl.innerHTML = '';
+          (fb.recommendations || []).forEach(rec => {
+            const li = document.createElement('li');
+            li.innerHTML = `<i class="fas fa-arrow-trend-up" style="color: var(--neon-amber);"></i> ${rec}`;
+            recsUl.appendChild(li);
+          });
+
+          // Question-wise evaluations
+          const qContainer = document.getElementById('questionListContainer');
+          qContainer.innerHTML = '';
+
+          if (fb.question_evaluations && fb.question_evaluations.length > 0) {
+            fb.question_evaluations.forEach((qEval, idx) => {
+              const card = document.createElement('div');
+              card.style.cssText = `
+                background: rgba(4, 9, 24, 0.65);
+                border: 1px solid var(--border-subtle);
+                border-radius: var(--radius-md);
+                padding: 1.2rem;
+              `;
+
+              const isSkipped = qEval.status === 'skipped';
+              const matchBadgeClass = isSkipped ? 'badge-amber' : (qEval.concept_match === 'Strong concept match' ? 'badge-green' : (qEval.concept_match === 'Partial concept match' ? 'badge-blue' : 'badge-amber'));
+
+              card.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+                  <span style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--neon-cyan); font-weight: 700;">
+                    Question ${idx + 1} [${qEval.question_code}]
+                  </span>
+                  <span class="badge ${matchBadgeClass}">${qEval.concept_match}</span>
+                </div>
+                <div style="color: #ffffff; font-weight: 600; margin-bottom: 0.6rem; font-size: 0.95rem;">
+                  ${qEval.question_text}
+                </div>
+                <div style="background: rgba(0, 0, 0, 0.25); border-radius: 6px; padding: 0.6rem 0.8rem; margin-bottom: 0.6rem; font-size: 0.88rem; color: var(--text-main);">
+                  <strong style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase;">Candidate Spoken Answer:</strong><br>
+                  ${isSkipped ? '<em style="color: var(--text-dim);">[Question Skipped]</em>' : (qEval.user_answer || '<em style="color: var(--text-dim);">[No answer]</em>')}
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; font-size: 0.78rem; margin-bottom: 0.5rem;">
+                  <span style="color: var(--text-dim); margin-right: 0.4rem;">Expected Concepts:</span>
+                  ${(qEval.concepts_expected || []).map(c => `<span style="background: rgba(0, 229, 255, 0.1); color: var(--neon-cyan); padding: 0.15rem 0.5rem; border-radius: 4px;">${c}</span>`).join('')}
+                </div>
+                ${!isSkipped ? `
+                <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; font-size: 0.78rem; margin-bottom: 0.5rem;">
+                  <span style="color: var(--text-dim); margin-right: 0.4rem;">Concepts Identified:</span>
+                  ${(qEval.concepts_identified && qEval.concepts_identified.length > 0) ? qEval.concepts_identified.map(c => `<span style="background: rgba(0, 245, 160, 0.15); color: var(--neon-emerald); padding: 0.15rem 0.5rem; border-radius: 4px;">✓ ${c}</span>`).join('') : '<span style="color: var(--text-dim);">None identified</span>'}
+                </div>` : ''}
+                <div style="font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 0.5rem; margin-top: 0.5rem;">
+                  ${qEval.feedback}
+                </div>
+              `;
+              qContainer.appendChild(card);
+            });
+          } else {
+            qContainer.innerHTML = '<div style="color: var(--text-dim); font-size: 0.9rem;">No question evaluations available for this session.</div>';
+          }
+        } else {
+          window.NextHire.showToast(data.error || 'Failed to retrieve feedback.', 'error');
+        }
+      } catch (err) {
+        console.error('Feedback loading error:', err);
+      }
+    });
+  </script>
+</body>
+</html>
+

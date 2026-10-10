@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Registration | NextHire</title>
+  <meta name="description" content="Register an account on NextHire to experience AI-powered mock interviews.">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    .auth-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+    .auth-card {
+      max-width: 480px;
+      width: 100%;
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .auth-header h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+    .auth-header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .auth-footer a {
+      color: var(--neon-cyan);
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="navbar">
+      <a href="/" class="brand">
+        <div class="brand-icon"><i class="fas fa-microchip"></i></div>
+        <div class="brand-title">Next<span>Hire</span></div>
+      </a>
+      <div class="nav-actions">
+        <a href="/login" class="btn btn-glass btn-sm">Already Registered? Log In</a>
+      </div>
+    </header>
+
+    <main class="auth-wrapper">
+      <div class="glass-card auth-card">
+        <div class="auth-header">
+          <div style="width: 52px; height: 52px; background: rgba(0, 245, 160, 0.1); border: 1px solid rgba(0, 245, 160, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--neon-emerald); font-size: 1.3rem;">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <h2>Create Candidate Profile</h2>
+          <p>Begin your interview journey with isolated feedback storage.</p>
+        </div>
+
+        <form id="registerForm">
+          <div class="form-group">
+            <label class="form-label" for="username">Username</label>
+            <input type="text" id="username" class="form-control" placeholder="johndoe_dev" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Gmail Address</label>
+            <div class="input-validation-wrapper">
+              <input type="email" id="email" class="form-control" placeholder="pruthvi@gmail.com" required autocomplete="email">
+              <span class="validation-icon" id="emailValidationIcon"></span>
+            </div>
+            <div class="validation-message" id="emailValidationMsg"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="targetRole">Primary Target Role</label>
+            <select id="targetRole" class="form-control">
+              <option value="Full Stack Software Engineer">Full Stack Software Engineer</option>
+              <option value="Backend Developer (Python/Flask)">Backend Developer (Python/Flask)</option>
+              <option value="Java Enterprise Engineer">Java Enterprise Engineer</option>
+              <option value="DevOps & Cloud Engineer">DevOps & Cloud Engineer</option>
+              <option value="Database Administrator">Database Administrator</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" id="password" class="form-control" placeholder="••••••••••••" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+            <span>Complete Registration</span> <i class="fas fa-user-check"></i>
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          Already have an account? <a href="/login">Sign In</a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div>NextHire Registration Portal</div>
+      <div>Stage 1 &bull; Phase 1 Architecture</div>
+    </footer>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+</html>
